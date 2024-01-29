@@ -1,18 +1,18 @@
-const user = require ('../../cores/lib/user');
-const tools = require ("../../cores/lib/account");
-
 var login = (req, res) => {
     var username = req.body.userName.toLowerCase();
     var password = req.body.password;
     var secret = req.body.secret;
 
     var account = user.userexists(username);
-    if (!account) return res.send("-1");
-    if (!tools.verifyaccount(username, req.body.password)) return res.send("-1");
-    var userinfo = user.userinfoExists(username);
+    if (!account || !tools.verifyaccount(username, req.body.password)) {
+        return res.send("-1"); // Account not found or verification failed
+    }
 
-    if (!userinfo) {
-        userinfo = user.createUserScore(username);
+    if (!account.verified) {
+        return res.send("-2"); // Unverified account
+    }
+
+    var userinfo = user.userinfoExists(username);
 
         user.createUserInfo(userinfo,account["ID"]);
         user.createUserIcons(userinfo, account["ID"]);
