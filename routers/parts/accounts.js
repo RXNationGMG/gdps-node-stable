@@ -14,15 +14,17 @@ var login = (req, res) => {
 
     var userinfo = user.userinfoExists(username);
 
-        user.createUserInfo(userinfo,account["ID"]);
+    if (!userinfo) {
+        userinfo = user.createUserScore(username);
+        user.createUserInfo(userinfo, account["ID"]);
         user.createUserIcons(userinfo, account["ID"]);
         userinfo = {
             "UID": userinfo
-        }
+        };
     }
 
     res.send(`${account["ID"]},${userinfo["UID"]}`);
-}
+};
 
 var register = (req,res) => {
     var username = req.body.userName.toLowerCase();
