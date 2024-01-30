@@ -46,17 +46,17 @@ module.exports.verifyaccount = (username, password) => {
     return chk;
 }
 
-module.exports.createaccount = (username, password, email) => {
+module.exports.createaccount = (username,password,email) => {
     if (user.userexists(username)) return false;
 
     var time = Date.now();
-    var target = ['username', 'password', 'email', 'createon', 'saveon', 'verified'];
-    var push = [username, tools.hashpassword(password), email, time, time, true];
+    var target = ['username','password','email','createon','saveon'];
+    var push = [username, tools.hashpassword(password), email, time, time];
 
     var count = db.select("accounts").count;
-    if (count == 0) {
-        target.push("ID");
-        push.push(accID);
+    if (count==0) {
+        target.push ("ID");
+        push.push (accID);
     }
 
     var account = db.insert('accounts').target(target);
