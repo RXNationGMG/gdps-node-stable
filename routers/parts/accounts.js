@@ -1,3 +1,6 @@
+const user = require('../../cores/lib/user');
+const tools = require('../../cores/lib/account');
+
 var login = (req, res) => {
     var username = req.body.userName.toLowerCase();
     var password = req.body.password;
