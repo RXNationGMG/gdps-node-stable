@@ -1,26 +1,20 @@
-const tables = require('./tables');
-const sql = require('better-sqlite3');
+const tables = require ('./tables');
+const sql = require ("better-sqlite3");
 const path = require('path');
-const fs = require('fs');
+const fs = require ('fs');
 
 const sqlfile = path.join(global.system.mainpath, `${global.config.datapath}/database.db`);
 const cachefile = path.join(global.system.mainpath, `${global.config.datapath}/cache-sql.txt`);
 
-function correctdata(type, data) {
-    if (type === "INTEGER" || type === "NUMBER") return Number(data);
-    if (type === "TEXT") return `'${data}'`;
-    if (type === "BOOLEAN") return Boolean(data);
-}
-
-function checktables() {
+function checktables () {
     var db = new sql(sqlfile);
-    tables.forEach((table) => {
+    tables.forEach(table=> {
         var intable = "";
-        table.intable.forEach((o) => {
-            intable += `${o.name} ${o.type} ${o.params},`;
+        table.intable.forEach (o => {
+            intable+=`${o.name} ${o.type} ${o.params},`
         });
-        intable = intable.slice(0, -1);
-        const sql_run = `CREATE TABLE IF NOT EXISTS ${table.name} (${intable})`;
+        intable = intable.slice(0,-1);
+        sql_run = `CREATE TABLE IF NOT EXISTS ${table.name} (${intable})`
 
         var tableset = db.prepare(sql_run);
         // console.log(sql_run);
